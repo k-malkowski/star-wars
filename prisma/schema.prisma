@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("STAR_WARS_DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Character {
+    uuid      String      @id @default(uuid())
+    name    String
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    episodes  Episode[]
+    planet    Planet    @relation(fields: [planetId], references: [id])
+    planetId    Int
+}
+
+model Episode {
+    id        Int      @id @default(autoincrement())
+    title    String
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    characters  Character[]
+}
+
+model Planet {
+    id        Int      @id @default(autoincrement())
+    name    String
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    characters  Character[]
+}
