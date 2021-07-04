@@ -1,4 +1,4 @@
-import { IsInt, IsString, Length } from 'class-validator';
+import { IsInt, IsOptional, IsString, Length } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -16,6 +16,7 @@ export class UpdateEpisodeDTO {
     default: 'Brand new episode'
   })
   @Length(1)
+  @IsOptional()
   @IsString()
   title?: string
 }

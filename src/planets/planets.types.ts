@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsUUID, Length } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsUUID, Length } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -16,6 +16,7 @@ export class UpdatePlanetDTO {
     default: 'Alderaan'
   })
   @Length(1)
+  @IsOptional()
   @IsString()
   name?: string
 }
