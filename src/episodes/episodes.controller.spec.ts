@@ -2,7 +2,7 @@ import { EpisodesService } from './episodes.service';
 import { EpisodesController } from './episodes.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { EpisodesModel } from './episodes.model';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 const dateMock = new Date('01.01.2020');
 
@@ -45,6 +45,40 @@ describe('EpisodesController', () => {
       const episode = createdEpisodeMock();
       jest.spyOn(episodesModel, 'findMany').mockImplementation(async () => [episode])
       expect(await episodesController.getAllEpisodes()).toStrictEqual([episode]);
+    })
+  })
+  describe('Get episode', () => {
+    it('should return episode', async () => {
+      const episode = createdEpisodeMock();
+      jest.spyOn(episodesModel, 'findOne').mockImplementation(async () => episode);
+      expect(await episodesController.getEpisode({ episodeId: 1 })).toStrictEqual(episode);
+    })
+    it('should return 404 when episode not found', async (done) => {
+      jest.spyOn(episodesModel, 'findOne').mockImplementation(async () => null);
+      try {
+        await episodesController.getEpisode({ episodeId: 1});
+      } catch (err) {
+        expect(err.status).toBe(404)
+        expect(err.message).toBe('Episode not found.')
+        done();
+      }
+    })
+  })
+  describe('Delete episode', () => {
+    it('shoud delete episode', async () => {
+      const episode = createdEpisodeMock();
+      jest.spyOn(episodesModel, 'delete').mockImplementation(async () => episode);
+      expect(await episodesController.deleteEpisode({ episodeId: 1 })).toStrictEqual(episode);
+    })
+    it('should return 404 when episode not found', async (done) => {
+      jest.spyOn(episodesModel, 'findOne').mockImplementation(async () => null);
+      try {
+        await episodesController.deleteEpisode({ episodeId: 1});
+      } catch (err) {
+        expect(err.status).toBe(404)
+        expect(err.message).toBe('Episode not found.')
+        done();
+      }
     })
   })
 })

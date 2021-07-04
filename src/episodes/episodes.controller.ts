@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
-import { CreateEpisodeDTO } from './episodes.types';
+import { CreateEpisodeDTO, DeleteEpisodeDTO, GetEpisodeDTO } from './episodes.types';
 import {
   ApiBadRequestResponse,
-  ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -35,5 +38,39 @@ export class EpisodesController {
   @Get('')
   async getAllEpisodes() {
     return await this.episodesService.getAllEpisodes();
+  }
+
+  @ApiOkResponse({
+    description: 'The episode has been successfully returned.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request (validation error?).',
+  })
+  @ApiNotFoundResponse({
+    description: 'Episode not found.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
+  @Get(':episodeId')
+  async getEpisode(@Param() params: GetEpisodeDTO) {
+    return await this.episodesService.getEpisode(Number(params.episodeId));
+  }
+
+  @ApiOkResponse({
+    description: 'The episode has been successfully deleted',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request (validation error?).',
+  })
+  @ApiNotFoundResponse({
+    description: 'Episode not found.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
+  @Delete(':episodeId')
+  async deleteEpisode(@Param() params: DeleteEpisodeDTO) {
+    return await this.episodesService.deleteEpisode(Number(params.episodeId));
   }
 }
