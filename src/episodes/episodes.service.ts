@@ -15,7 +15,7 @@ export class EpisodesService {
     }
   }
 
-  async getAllEpisodes(): Promise<Episode[] | []> {
+  async getEpisodes(): Promise<Episode[] | []> {
     try {
       return await this.episodesModel.findMany({});
     } catch ({ message, status }) {

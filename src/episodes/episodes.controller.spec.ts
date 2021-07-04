@@ -44,7 +44,7 @@ describe('EpisodesController', () => {
     it('should return all episodes', async () => {
       const episode = createdEpisodeMock();
       jest.spyOn(episodesModel, 'findMany').mockImplementation(async () => [episode])
-      expect(await episodesController.getAllEpisodes()).toStrictEqual([episode]);
+      expect(await episodesController.getEpisodes()).toStrictEqual([episode]);
     })
   })
   describe('Get episode', () => {

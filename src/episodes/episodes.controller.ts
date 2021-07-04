@@ -14,7 +14,6 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UpdatePlanetDTO, UpdatePlanetParamDTO } from '../planets/planets.types';
 
 @ApiTags('episodes')
 @Controller('api/v1/episodes')
@@ -42,8 +41,8 @@ export class EpisodesController {
     description: 'Internal server error',
   })
   @Get('')
-  async getAllEpisodes() {
-    return await this.episodesService.getAllEpisodes();
+  async getEpisodes() {
+    return await this.episodesService.getEpisodes();
   }
 
   @ApiOkResponse({
