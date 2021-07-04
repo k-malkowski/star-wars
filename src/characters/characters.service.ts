@@ -1,6 +1,6 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CharactersModel } from './characters.model';
-import { CreateCharacterDTO, UpdateCharacterDTO } from './characters.types';
+import { CharacterWithRelations, CreateCharacterDTO, UpdateCharacterDTO } from './characters.types';
 import { Character } from '@prisma/client';
 import { PlanetsService } from '../planets/planets.service';
 import { EpisodesService } from '../episodes/episodes.service';
@@ -69,15 +69,29 @@ export class CharactersService {
       if (!(await this.characterExists(characterUuid))) {
         throw new NotFoundException('Character not found.')
       }
-      return this.charactersModel.findOne({ uuid: characterUuid });
+      return await this.charactersModel.findOne({ uuid: characterUuid });
     } catch ({ status, message }) {
       throw new HttpException(message, status);
     }
   }
 
-  async getCharacters(): Promise<Character[] | []> {
+  async getCharacters(limit = 50, from = 0): Promise<CharacterWithRelations[] | []> {
     try {
-      return this.charactersModel.findMany({});
+      const characters = await this.charactersModel.findMany({}, limit, from)
+      const modifiedCharacters = characters.map((character) => {
+        const modifiedCharacter = {
+          name: character.name,
+          episodes: character.episodes.map(({ title }) => title),
+        }
+        if (character.planet) {
+          return {
+            ...modifiedCharacter,
+            planet: character.planet.name
+          }
+        }
+        return modifiedCharacter
+      })
+      return modifiedCharacters;
     } catch ({ status, message }) {
       throw new HttpException(message, status);
     }

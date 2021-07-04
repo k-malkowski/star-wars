@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import {
   ApiBadRequestResponse,
@@ -10,7 +10,7 @@ import {
   AddPlanetToCharacterDTO,
   CreateCharacterDTO,
   DeleteCharacterDTO,
-  GetCharacterDTO,
+  GetCharacterDTO, GetCharactersDTO,
   UpdateCharacterDTO,
   UpdateCharacterParamDTO,
 } from './characters.types';
@@ -109,8 +109,8 @@ export class CharactersController {
     description: 'Internal server error',
   })
   @Get('')
-  async getCharacters() {
-    return await this.charactersService.getCharacters();
+  async getCharacters(@Query() query: GetCharactersDTO) {
+    return await this.charactersService.getCharacters(Number(query.limit), Number(query.from));
   }
 
   @ApiOkResponse({

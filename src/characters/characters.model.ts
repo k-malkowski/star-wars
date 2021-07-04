@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Character } from '@prisma/client';
+import { Prisma, Character, Planet, Episode } from '@prisma/client';
 
 @Injectable()
 export class CharactersModel {
@@ -93,14 +93,16 @@ export class CharactersModel {
     }
   }
 
-  async findMany(characterFields: Prisma.CharacterWhereInput): Promise<Character[]> {
+  async findMany(characterFields: Prisma.CharacterWhereInput, limit: number, from: number): Promise<any> {
     try {
       return await this.prisma.character.findMany({
         where: characterFields,
         include: {
           planet: true,
           episodes: true
-        }
+        },
+        skip: from,
+        take: limit
       })
     } catch (e) {
       throw e;
