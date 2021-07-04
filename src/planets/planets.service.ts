@@ -15,7 +15,7 @@ export class PlanetsService {
     }
   }
 
-  async getAllPlanets(): Promise<Planet[] | []> {
+  async getPlanets(): Promise<Planet[] | []> {
     try {
       return await this.planetsModel.findMany({});
     } catch ({ message, status }) {

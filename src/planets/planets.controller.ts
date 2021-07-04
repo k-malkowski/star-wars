@@ -42,8 +42,8 @@ export class PlanetsController {
     description: 'Internal server error',
   })
   @Get('')
-  async getAllPlanets() {
-    return await this.planetsService.getAllPlanets();
+  async getPlanets() {
+    return await this.planetsService.getPlanets();
   }
 
   @ApiOkResponse({

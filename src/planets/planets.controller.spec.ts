@@ -44,7 +44,7 @@ describe('PlanetsController', () => {
     it('should return all planets', async () => {
       const planet = createdPlanetMock();
       jest.spyOn(planetsModel, 'findMany').mockImplementation(async () => [planet])
-      expect(await planetsController.getAllPlanets()).toStrictEqual([planet]);
+      expect(await planetsController.getPlanets()).toStrictEqual([planet]);
     })
   })
   describe('Get planet', () => {
