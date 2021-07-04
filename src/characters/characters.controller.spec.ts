@@ -52,9 +52,25 @@ describe('PlanetsController', () => {
   })
   describe('Get characters', () => {
     it('should return all characters', async () => {
-      const character = createdCharacterMock();
-      jest.spyOn(charactersModel, 'findMany').mockImplementation(async () => [character])
-      expect(await charactersController.getCharacters()).toStrictEqual([character]);
+      const characterFromDb = {
+        uuid: 'mocked',
+        name: 'Luke Skywalker',
+        createdAt: dateMock,
+        updatedAt: dateMock,
+        planet: {
+          name: 'Alderaan',
+        },
+        episodes: [
+          { title: 'JEDI' }
+        ]
+      }
+      const createdCharacter = {
+        name: 'Luke Skywalker',
+        planet: 'Alderaan',
+        episodes: ['JEDI']
+      };
+      jest.spyOn(charactersModel, 'findMany').mockImplementation(async () => [characterFromDb])
+      expect(await charactersController.getCharacters({ limit: 5, from: 0 })).toStrictEqual([createdCharacter]);
     })
   })
   describe('Get character', () => {

@@ -81,7 +81,7 @@ export class CharactersService {
       const modifiedCharacters = characters.map((character) => {
         const modifiedCharacter = {
           name: character.name,
-          episodes: character.episodes.map(({ title }) => title),
+          episodes: character.episodes?.map(({ title }) => title) || [],
         }
         if (character.planet) {
           return {
