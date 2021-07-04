@@ -1,6 +1,6 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CharactersModel } from './characters.model';
-import { CreateCharacterDTO } from './characters.types';
+import { CreateCharacterDTO, UpdateCharacterDTO } from './characters.types';
 import { Character } from '@prisma/client';
 import { PlanetsService } from '../planets/planets.service';
 import { EpisodesService } from '../episodes/episodes.service';
@@ -78,6 +78,17 @@ export class CharactersService {
   async getCharacters(): Promise<Character[] | []> {
     try {
       return this.charactersModel.findMany({});
+    } catch ({ status, message }) {
+      throw new HttpException(message, status);
+    }
+  }
+
+  async updateCharacter(characterData: UpdateCharacterDTO, characterUuid: string): Promise<Character> {
+    try {
+       if (!(await this.characterExists(characterUuid))) {
+         throw new NotFoundException('Character not found.')
+       }
+       return await this.charactersModel.update(characterData, characterUuid);
     } catch ({ status, message }) {
       throw new HttpException(message, status);
     }

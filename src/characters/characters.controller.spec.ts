@@ -2,7 +2,6 @@ import { CharactersService } from './characters.service';
 import { CharactersController } from './characters.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { CharactersModel } from './characters.model';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { PlanetsModel } from '../planets/planets.model';
 import { PlanetsService } from '../planets/planets.service';
 import { EpisodesModel } from '../episodes/episodes.model';

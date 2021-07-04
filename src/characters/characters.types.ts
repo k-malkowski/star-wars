@@ -11,6 +11,21 @@ export class CreateCharacterDTO {
   name!: string
 }
 
+export class UpdateCharacterDTO {
+  @ApiProperty({
+    default: 'Luke Skywalker'
+  })
+  @Length(1)
+  @IsString()
+  name?: string
+}
+
+export class UpdateCharacterParamDTO {
+  @ApiProperty({ default: '' })
+  @IsUUID('4')
+  characterUuid!: string;
+}
+
 export class AddPlanetToCharacterDTO {
   @ApiProperty({ default: '' })
   @IsUUID('4')

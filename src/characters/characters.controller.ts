@@ -8,9 +8,12 @@ import {
 import {
   AddEpisodeToCharacterDTO,
   AddPlanetToCharacterDTO,
-  CreateCharacterDTO, DeleteCharacterDTO, GetCharacterDTO,
+  CreateCharacterDTO,
+  DeleteCharacterDTO,
+  GetCharacterDTO,
+  UpdateCharacterDTO,
+  UpdateCharacterParamDTO,
 } from './characters.types';
-import { DeletePlanetDTO, GetPlanetDTO } from '../planets/planets.types';
 
 @ApiTags('characters')
 @Controller('api/v1/characters')
@@ -108,5 +111,22 @@ export class CharactersController {
   @Get('')
   async getCharacters() {
     return await this.charactersService.getCharacters();
+  }
+
+  @ApiOkResponse({
+    description: 'The resource updated successfully.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request (validation error?).',
+  })
+  @ApiNotFoundResponse({
+    description: 'Character not found.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
+  @Put(':characterUuid')
+  async updateCharacter(@Param() params: UpdateCharacterParamDTO, @Body() characterData: UpdateCharacterDTO) {
+    return await this.charactersService.updateCharacter(characterData, params.characterUuid);
   }
 }
