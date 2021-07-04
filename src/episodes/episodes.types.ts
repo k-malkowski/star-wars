@@ -11,6 +11,22 @@ export class CreateEpisodeDTO {
   title!: string
 }
 
+export class UpdateEpisodeDTO {
+  @ApiProperty({
+    default: 'Brand new episode'
+  })
+  @Length(1)
+  @IsString()
+  title?: string
+}
+
+export class UpdateEpisodeParamDTO {
+  @ApiProperty({ default: 1 })
+  @IsInt()
+  @Type(() => Number)
+  episodeId!: number;
+}
+
 export class GetEpisodeDTO {
   @ApiProperty({ default: 1 })
   @IsInt()

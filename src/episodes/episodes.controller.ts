@@ -1,6 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
-import { CreateEpisodeDTO, DeleteEpisodeDTO, GetEpisodeDTO } from './episodes.types';
+import {
+  CreateEpisodeDTO,
+  DeleteEpisodeDTO,
+  GetEpisodeDTO, UpdateEpisodeDTO,
+  UpdateEpisodeParamDTO,
+} from './episodes.types';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -9,6 +14,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdatePlanetDTO, UpdatePlanetParamDTO } from '../planets/planets.types';
 
 @ApiTags('episodes')
 @Controller('api/v1/episodes')
@@ -72,5 +78,22 @@ export class EpisodesController {
   @Delete(':episodeId')
   async deleteEpisode(@Param() params: DeleteEpisodeDTO) {
     return await this.episodesService.deleteEpisode(Number(params.episodeId));
+  }
+
+  @ApiOkResponse({
+    description: 'The resource updated successfully.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request (validation error?).',
+  })
+  @ApiNotFoundResponse({
+    description: 'Episode not found.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
+  @Put(':episodeId')
+  async updatePlanet(@Param() params: UpdateEpisodeParamDTO, @Body() episodeData: UpdateEpisodeDTO) {
+    return await this.episodesService.updateEpisode(episodeData, Number(params.episodeId));
   }
 }

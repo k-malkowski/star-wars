@@ -1,7 +1,7 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { EpisodesModel } from './episodes.model';
 import { Episode } from '@prisma/client';
-import { CreateEpisodeDTO } from './episodes.types';
+import { CreateEpisodeDTO, UpdateEpisodeDTO } from './episodes.types';
 
 @Injectable()
 export class EpisodesService {
@@ -48,6 +48,17 @@ export class EpisodesService {
         throw new NotFoundException('Episode not found.');
       }
       return await this.episodesModel.delete(episodeId);
+    } catch ({ message, status }) {
+      throw new HttpException(message, status);
+    }
+  }
+
+  async updateEpisode(episodeData: UpdateEpisodeDTO, episodeId: number): Promise<Episode> {
+    try {
+      if (!(await this.episodeExists(episodeId))) {
+        throw new NotFoundException('Episode not found.');
+      }
+      return await this.episodesModel.update(episodeData, episodeId);
     } catch ({ message, status }) {
       throw new HttpException(message, status);
     }
