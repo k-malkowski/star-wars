@@ -1,6 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { PlanetsService } from './planets.service';
-import { CreatePlanetDTO, DeletePlanetDTO, GetPlanetDTO } from './planets.types';
+import {
+  CreatePlanetDTO,
+  DeletePlanetDTO,
+  GetPlanetDTO, UpdatePlanetDTO,
+  UpdatePlanetParamDTO,
+} from './planets.types';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -9,6 +14,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdateCharacterDTO, UpdateCharacterParamDTO } from '../characters/characters.types';
 
 @ApiTags('planets')
 @Controller('api/v1/planets')
@@ -72,5 +78,22 @@ export class PlanetsController {
   @Delete(':planetId')
   async deletePlanet(@Param() params: DeletePlanetDTO) {
     return await this.planetsService.deletePlanet(Number(params.planetId));
+  }
+
+  @ApiOkResponse({
+    description: 'The resource updated successfully.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request (validation error?).',
+  })
+  @ApiNotFoundResponse({
+    description: 'Planet not found.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
+  @Put(':planetId')
+  async updatePlanet(@Param() params: UpdatePlanetParamDTO, @Body() planetData: UpdatePlanetDTO) {
+    return await this.planetsService.updatePlanet(planetData, Number(params.planetId));
   }
 }

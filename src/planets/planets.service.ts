@@ -1,7 +1,7 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { PlanetsModel } from './planets.model';
 import { Planet } from '@prisma/client';
-import { CreatePlanetDTO } from './planets.types';
+import { CreatePlanetDTO, UpdatePlanetDTO } from './planets.types';
 
 @Injectable()
 export class PlanetsService {
@@ -48,6 +48,17 @@ export class PlanetsService {
         throw new NotFoundException('Planet not found.');
       }
       return await this.planetsModel.delete(planetId);
+    } catch ({ message, status }) {
+      throw new HttpException(message, status);
+    }
+  }
+
+  async updatePlanet(planetData: UpdatePlanetDTO, planetId: number): Promise<Planet> {
+    try {
+      if (!(await this.planetExists(planetId))) {
+        throw new NotFoundException('Planet not found.');
+      }
+      return await this.planetsModel.update(planetData, planetId);
     } catch ({ message, status }) {
       throw new HttpException(message, status);
     }
