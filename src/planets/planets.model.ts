@@ -16,7 +16,7 @@ export class PlanetsModel {
     }
   }
 
-  async update(planetFields: Prisma.EpisodeUpdateInput, planetId: number): Promise<Planet> {
+  async update(planetFields: Prisma.PlanetUpdateInput, planetId: number): Promise<Planet> {
     try {
       return await this.prisma.planet.update({
         where: {

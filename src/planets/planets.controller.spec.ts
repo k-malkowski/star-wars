@@ -34,7 +34,7 @@ describe('PlanetsController', () => {
     planetsController = new PlanetsController(planetsService);
   })
   describe('Create planet', () => {
-    it('should create and return episode', async () => {
+    it('should create and return planet', async () => {
       const planet = createdPlanetMock();
       jest.spyOn(planetsModel, 'add').mockImplementation(async () => planet)
       expect(await planetsController.createPlanet(createPlanetMock())).toStrictEqual(planet);
