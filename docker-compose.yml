@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  star_wars_db:
+    container_name: "star_wars_db"
+    image: postgres:13.1-alpine
+    ports:
+      - "${STAR_WARS_DB_PORT}:${STAR_WARS_DB_PORT}"
+    environment:
+      - POSTGRES_USER=${STAR_WARS_DB_USERNAME}
+      - POSTGRES_PASSWORD=${STAR_WARS_DB_PASSWORD}
+      - POSTGRES_DB=${STAR_WARS_DB_NAME}
